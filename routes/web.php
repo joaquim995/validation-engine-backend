@@ -6,7 +6,9 @@ Route::get('/', function () {
     return response()->json([
         'message' => 'Validation Engine API',
         'status' => 'running',
-        'version' => '1.0.0'
+        'version' => '1.0.0',
+        'server' => 'Render.com',
+        'timestamp' => now()->toDateTimeString()
     ]);
 });
 
