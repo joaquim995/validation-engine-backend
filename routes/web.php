@@ -10,10 +10,16 @@ Route::get('/', function () {
     ]);
 });
 
-// Test route to verify API is working
-Route::get('/test', function () {
+// Debug route to check environment
+Route::get('/debug', function () {
     return response()->json([
-        'message' => 'Backend is working!',
-        'timestamp' => now()->toDateTimeString()
+        'app_env' => env('APP_ENV'),
+        'app_debug' => env('APP_DEBUG'),
+        'db_connection' => env('DB_CONNECTION'),
+        'db_host' => env('DB_HOST'),
+        'db_database' => env('DB_DATABASE'),
+        'has_app_key' => !empty(env('APP_KEY')),
+        'php_version' => PHP_VERSION,
+        'laravel_version' => app()->version()
     ]);
 });
