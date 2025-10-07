@@ -18,6 +18,8 @@ echo "🗄️ Running migrations..."
 php artisan migrate --force
 
 echo "⚡ Caching configuration..."
+php artisan config:clear
+php artisan route:clear
 php artisan config:cache
 php artisan route:cache
 
