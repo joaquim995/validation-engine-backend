@@ -1,25 +1,41 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
-    return response()->json([
-        'message' => 'Validation Engine API',
-        'status' => 'running',
-        'version' => '1.0.0'
-    ]);
+    try {
+        return response()->json([
+            'message' => 'Validation Engine API',
+            'status' => 'running',
+            'version' => '1.0.0'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Route error',
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ], 500);
+    }
 });
 
-// Debug route to check environment
-Route::get('/debug', function () {
-    return response()->json([
-        'app_env' => env('APP_ENV'),
-        'app_debug' => env('APP_DEBUG'),
-        'db_connection' => env('DB_CONNECTION'),
-        'db_host' => env('DB_HOST'),
-        'db_database' => env('DB_DATABASE'),
-        'has_app_key' => !empty(env('APP_KEY')),
-        'php_version' => PHP_VERSION,
-        'laravel_version' => app()->version()
-    ]);
+// Database connection test
+Route::get('/db-test', function () {
+    try {
+        $pdo = DB::connection()->getPdo();
+        return response()->json([
+            'status' => 'Database connected',
+            'driver' => DB::connection()->getDriverName(),
+            'database' => DB::connection()->getDatabaseName()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Database connection failed',
+            'message' => $e->getMessage(),
+            'db_connection' => env('DB_CONNECTION'),
+            'db_host' => env('DB_HOST'),
+            'db_database' => env('DB_DATABASE')
+        ], 500);
+    }
 });
