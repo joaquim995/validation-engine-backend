@@ -1,15 +1,24 @@
 #!/bin/bash
 
-# Install dependencies
+echo "🔧 Installing dependencies..."
 composer install --no-dev --optimize-autoloader
 
-# Create SQLite database if it doesn't exist
-touch database/database.sqlite
+echo "📁 Setting up database..."
+# Create database directory if it doesn't exist
+mkdir -p database
 
-# Run migrations
+# For SQLite: Create database file
+if [ "$DB_CONNECTION" = "sqlite" ]; then
+    touch database/database.sqlite
+    chmod 664 database/database.sqlite
+    echo "✅ SQLite database file created"
+fi
+
+echo "🗄️ Running migrations..."
 php artisan migrate --force
 
-# Cache configuration
+echo "⚡ Caching configuration..."
 php artisan config:cache
 php artisan route:cache
-php artisan view:cache
+
+echo "✅ Build complete!"
