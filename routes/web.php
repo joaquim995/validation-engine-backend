@@ -4,20 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
-    try {
-        return response()->json([
-            'message' => 'Validation Engine API',
-            'status' => 'running',
-            'version' => '1.0.0'
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'error' => 'Route error',
-            'message' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine()
-        ], 500);
-    }
+    return 'Hello World - Laravel is working!';
 });
 
 // Database connection test
